@@ -21,7 +21,7 @@ server:
   # Web访问端口
   port: 8080
 project:
-	# 字典上传后存放的路径
+  # 字典上传后存放的路径
   file-base-path: /root/file/
   
 ```
