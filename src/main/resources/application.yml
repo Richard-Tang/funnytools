@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/funnytools_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: root
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      test-on-borrow: true
+      driver-class-name: com.mysql.jdbc.Driver
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        allow: 127.0.0.1
+      filter:
+        wall:
+          enabled: true
+          db-type: mysql
+        commons-log:
+          statement-log-enabled: true
+          statement-executable-sql-log-enable: true
+      web-stat-filter:
+        enabled: true
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+  mvc:
+    static-path-pattern: /static/**
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+server:
+  port: 8083
+  compression:
+    enabled: true
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+#  打印SQL语句
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+project:
+  file-base-path: D:\\file\\
+  crt-sh-api: https://crt.sh/?q=
+  ct-search-api: https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&includeExpired=true&exactMatch=false&limit=5000&domain=

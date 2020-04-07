@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="common::head"></th:block>
+    <style rel="stylesheet">
+        .layui-table-tool {
+            padding-bottom: unset;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <fieldset class="table-search-fieldset">
+            <legend>条件查询</legend>
+            <div class="layui-form layui-form-pane layui-form-pane-margin">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <select name="state">
+                                <option value=""></option>
+                                <option value="0">等待中</option>
+                                <option value="1">进行中</option>
+                                <option value="2">已完成</option>
+                                <option value="3">泛域名</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">类型</label>
+                        <div class="layui-input-block">
+                            <select name="type">
+                                <option value=""></option>
+                                <option value="0">域名枚举</option>
+                                <option value="1">页面搜索</option>
+                                <option value="2">证书搜索</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">目标</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="target" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn layui-btn-primary" lay-submit lay-filter="searchBtn"><i
+                                class="layui-icon"></i>搜 索
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <table class="layui-hide" id="layuiTable" lay-filter="layuiTable"></table>
+    </div>
+</div>
+<script type="text/html" id="stateTpl">
+    {{# if(d.state == 0) { }}
+    <span class="layui-badge layui-bg-blue">等待中</span>
+    {{# } else if(d.state == 1) { }}
+    <span class="layui-badge layui-bg-orange">进行中</span>
+    {{# } else if(d.state == 2) { }}
+    <span class="layui-badge layui-bg-green">已完成</span>
+    {{# } else { }}
+    <span class="layui-badge layui-bg-black">泛域名</span>
+    {{# } }}
+</script>
+<script type="text/html" id="typeTpl">
+    {{# if(d.type == 0) { }}
+    <span class="layui-badge layui-bg-blue">域名枚举</span>
+    {{# } else if(d.type == 1) { }}
+    <span class="layui-badge layui-bg-blue">页面搜索</span>
+    {{# } else if(d.type == 2) { }}
+    <span class="layui-badge layui-bg-blue">证书搜索</span>
+    {{# } else { }}
+    <span class="layui-badge">端口扫描</span>
+    {{# } }}
+</script>
+<script type="text/html" id="tableRowTool">
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="taskDel">删除</a>
+</script>
+<script th:replace="common::script"></script>
+<script th:inline="none">
+    layui.use(['ajax', 'form', 'table'], function () {
+        var $ = layui.ajax;
+        var form = layui.form;
+        var table = layui.table;
+
+        // 表格渲染
+        table.render({
+            page: true,
+            elem: '#layuiTable',
+            url: '/task/list',
+            limit: 20,
+            cols: [[
+                {type: "numbers", title: '编号'},
+                {field: 'id', hide: true},
+                {field: 'state', title: '状态', width: 100, templet: '#stateTpl', align: 'center'},
+                {field: 'type', title: '类型', width: 100, align: 'center', templet: '#typeTpl'},
+                {field: 'target', title: '目标', align: 'center'},
+                {field: 'createTime', title: '创建时间', align: 'center'},
+                {title: '操作', toolbar: '#tableRowTool', align: 'center'}
+            ]]
+        });
+
+        // 监听条件搜索
+        form.on('submit(searchBtn)', function (data) {
+            table.reload('layuiTable', {
+                where: {
+                    state: data.field.state,
+                    type: data.field.type,
+                    target: data.field.target
+                }
+            }, 'data');
+            return false;
+        });
+
+        // 表格行工具栏监听
+        table.on('tool(layuiTable)', function (obj) {
+            var data = obj.data;
+            var event = obj.event;
+            if (event === "taskDel") {
+                taskDel(data.id);
+            }
+        });
+
+        // 删除域名
+        function taskDel(id) {
+            $.post('/task/del', {id: id}, function (resp) {
+                switch (resp.code) {
+                    case 200:
+                        layer.msg("删除成功");
+                        table.reload('layuiTable');
+                        break;
+                    case 302:
+                        layer.msg("任务正在进行,无法删除!");
+                        break;
+                    case 777:
+                        layer.msg(resp.msg);
+                        break;
+                    default:
+                        layer.msg("删除失败");
+                }
+            })
+        }
+    });
+</script>
+</body>
+</html>

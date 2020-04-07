@@ -1,0 +1,51 @@
+{
+  "clearInfo": {
+    "clearUrl": "api/clear.json"
+  },
+  "homeInfo": {
+    "title": "首页",
+    "icon": "fa fa-home",
+    "href": "/main"
+  },
+  "logoInfo": {
+    "title": "funnylayer",
+    "image": "/static/images/logo.png",
+    "href": ""
+  },
+  "menuInfo": {
+    "currency": {
+      "title": "常用功能",
+      "icon": "fa fa-th",
+      "child": [
+        {
+          "title": "域名管理",
+          "icon": "fa fa-globe",
+          "href": "/domain"
+        },
+        {
+          "title": "任务管理",
+          "icon": "fa fa-rocket",
+          "href": "/task"
+        },
+        {
+          "title": "系统管理",
+          "icon": "fa fa-gears",
+          "child": [
+            {
+              "title": "API管理",
+              "icon": "fa fa-connectdevelop",
+              "target": "_self",
+              "href": "/swagger-ui.html"
+            },
+            {
+              "title": "数据源",
+              "icon": "fa fa-database",
+              "target": "_self",
+              "href": "/druid/"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
