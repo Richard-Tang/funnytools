@@ -30,7 +30,7 @@ project:
 5. 后台运行jar包(源码的话请用maven打成jar包)
 
 ```bash
-nohup java -jar funnylayer.jar &
+nohup java -jar funnytools.jar &
 ```
 
 6. 默认账号和密码 
