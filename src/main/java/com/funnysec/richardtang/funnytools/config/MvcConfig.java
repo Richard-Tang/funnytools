@@ -1,6 +1,7 @@
 package com.funnysec.richardtang.funnytools.config;
 
 import com.funnysec.richardtang.funnytools.interceptor.AuthInterceptor;
+import com.funnysec.richardtang.funnytools.interceptor.GlobalAttrInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -25,20 +26,33 @@ public class MvcConfig implements WebMvcConfigurer {
         return new AuthInterceptor();
     }
 
+    @Bean
+    public HandlerInterceptor getGlobalAttrInterceptor() {
+        return new GlobalAttrInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //需要拦截的路径规则
+        // 需要拦截的路径规则
         List<String> includePathPatterns = new ArrayList<String>();
         includePathPatterns.add("/**");
 
-        //不拦截的路径规则,注意放行静态资源
-        List<String> excludePathPatterns = new ArrayList<String>();
-        excludePathPatterns.add("/login**");
-        excludePathPatterns.add("/captcha**");
-        excludePathPatterns.add("/static/**");
+        // 不拦截的路径规则,注意放行静态资源
+        List<String> authExcludePathPatterns = new ArrayList<String>();
+        authExcludePathPatterns.add("/login**");
+        authExcludePathPatterns.add("/captcha**");
+        authExcludePathPatterns.add("/static/**");
 
-        //注册拦截器
-        registry.addInterceptor(getAuthInterceptor()).addPathPatterns(includePathPatterns).excludePathPatterns(excludePathPatterns);
+        // 不拦截的路径规则,注意放行静态资源
+        List<String> globalAttrExcludePathPatterns = new ArrayList<String>();
+        globalAttrExcludePathPatterns.add("/static/**");
+        globalAttrExcludePathPatterns.add("/swagger**");
+        globalAttrExcludePathPatterns.add("/druid**");
+        globalAttrExcludePathPatterns.add("/captcha**");
+
+        // 认证拦截器
+        registry.addInterceptor(getAuthInterceptor()).addPathPatterns(includePathPatterns).excludePathPatterns(authExcludePathPatterns);
+        registry.addInterceptor(getGlobalAttrInterceptor()).addPathPatterns(includePathPatterns).excludePathPatterns(globalAttrExcludePathPatterns);
     }
 
     @Override

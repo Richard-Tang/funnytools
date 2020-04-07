@@ -17,4 +17,5 @@ layui.config({
     iconPickerFa: 'iconPicker/iconPickerFa', // fa图标选择扩展
     ajax: 'ajax/ajax', // ajax扩展
     reg: 'reg/reg', // 正则扩展
+    tools: 'tools/tools', // 工具包
 });

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="common::head">公共头部</th:block>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-form layuimini-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">系统名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="required" lay-reqtext="系统名称不能为空" placeholder="请输入系统名称"
+                           th:value="${system.title}" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">系统版本</label>
+                <div class="layui-input-block">
+                    <input type="text" name="version" lay-verify="required" lay-reqtext="系统版本不能为空" placeholder="系统版本"
+                           th:value="${system.version}" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">系统特色</label>
+                <div class="layui-input-block">
+                    <textarea name="characteristics" class="layui-textarea"
+                              th:text="${system.characteristics}">无特色</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">系统菜单</label>
+                <div class="layui-input-block">
+                    <textarea name="menu" id="systemMenu" rows="40" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="setting">确定保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:replace="common::script"></script>
+<script th:inline="javascript">
+    layui.use(['tools', 'jquery'], function () {
+        var jsonFormat = layui.tools.jsonFormat([[${system.menu}]]);
+        layui.jquery("#systemMenu").text(jsonFormat.trim());
+    });
+</script>
+<script>
+    layui.use(['form', 'ajax'], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var $ = layui.ajax;
+        form.on('submit(setting)', function (data) {
+            $.post('/system', data.field, function (resp) {
+                switch (resp.code) {
+                    case 200:
+                        layer.msg("更新成功");
+                        break;
+                    case 777:
+                        layer.msg(resp.msg);
+                        break;
+                    default:
+                        layer.msg("更新失败");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
