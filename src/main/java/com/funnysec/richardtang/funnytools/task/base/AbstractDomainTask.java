@@ -30,7 +30,7 @@ public abstract class AbstractDomainTask implements IBaseTask {
     /**
      * 锁机制,为了让一个时间段内一个Task只处理一个目标
      */
-    protected static volatile boolean lock = true;
+    protected boolean lock = true;
 
     @Autowired
     protected ITaskService taskService;
