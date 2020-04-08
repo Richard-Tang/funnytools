@@ -50,7 +50,14 @@ public class ConfigController extends BaseController {
         Config config = new Config(type, ini);
         boolean isSuccess = configService.saveOrUpdate(config, new QueryWrapper<Config>().eq("type", type));
         if (isSuccess && type == TaskType.DOMAIN_DIC_FUZZ) {
-            domainDicFuzzIni = JSONUtil.toBean(ini, DomainDicFuzzIni.class);
+            /*
+            注意这里不能直接吧newIni赋值给domainDicFuzzIni
+            因为@Bean是单例的重新赋值就相当于重新指向了一个对象
+            重新指向的话将会操作失败
+            */
+            DomainDicFuzzIni newIni = JSONUtil.toBean(ini, DomainDicFuzzIni.class);
+            domainDicFuzzIni.setDicName(newIni.getDicName());
+            domainDicFuzzIni.setThreadSize(newIni.getThreadSize());
         }
         return vo(isSuccess);
     }
