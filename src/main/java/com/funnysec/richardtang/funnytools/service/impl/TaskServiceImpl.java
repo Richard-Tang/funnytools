@@ -1,7 +1,7 @@
 package com.funnysec.richardtang.funnytools.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.funnysec.richardtang.funnytools.constant.TaskState;
+import com.funnysec.richardtang.funnytools.constant.State;
 import com.funnysec.richardtang.funnytools.entity.Task;
 import com.funnysec.richardtang.funnytools.mapper.TaskMapper;
 import com.funnysec.richardtang.funnytools.service.ITaskService;
@@ -25,7 +25,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements IT
     public boolean saveBatchTask(List<String> target, Integer type) {
         List<@NonNull String> existTarget = query()
                 .eq("type", type)
-                .ne("state", TaskState.COMPLETE)
+                .ne("state", State.TASK_COMPLETE)
                 .in("target", target)
                 .list()
                 .stream()

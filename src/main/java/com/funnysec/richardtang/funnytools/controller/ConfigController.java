@@ -2,8 +2,8 @@ package com.funnysec.richardtang.funnytools.controller;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.funnysec.richardtang.funnytools.constant.TaskType;
-import com.funnysec.richardtang.funnytools.constant.VoState;
+import com.funnysec.richardtang.funnytools.constant.State;
+import com.funnysec.richardtang.funnytools.constant.Type;
 import com.funnysec.richardtang.funnytools.entity.Config;
 import com.funnysec.richardtang.funnytools.service.IConfigService;
 import com.funnysec.richardtang.funnytools.task.ini.DomainDicFuzzIni;
@@ -49,7 +49,7 @@ public class ConfigController extends BaseController {
     public Vo update(@NotNull(message = "类型不能为空") @Min(value = -1, message = "类型不正确") Integer type, @NotBlank(message = "配置不能为空") String ini) {
         Config config = new Config(type, ini);
         boolean isSuccess = configService.saveOrUpdate(config, new QueryWrapper<Config>().eq("type", type));
-        if (isSuccess && type == TaskType.DOMAIN_DIC_FUZZ) {
+        if (isSuccess && type == Type.TASK_DOMAIN_DIC_FUZZ) {
             /*
             注意这里不能直接吧newIni赋值给domainDicFuzzIni
             因为@Bean是单例的重新赋值就相当于重新指向了一个对象
@@ -69,9 +69,9 @@ public class ConfigController extends BaseController {
             @ApiImplicitParam(name = "type", value = "配置类型,域名/端口/路径", required = true, paramType = "query", dataType = "String", example = "0/1/2"),
     })
     public Vo get(@NotNull(message = "类型不能为空") @Min(value = -1, message = "类型不正确") Integer type) {
-        if (type == TaskType.DOMAIN_DIC_FUZZ) {
-            return vo(VoState.SUCCESS, JSONUtil.toJsonStr(domainDicFuzzIni));
+        if (type == Type.TASK_DOMAIN_DIC_FUZZ) {
+            return vo(State.VO_SUCCESS, JSONUtil.toJsonStr(domainDicFuzzIni));
         }
-        return vo(VoState.SUCCESS);
+        return vo(State.VO_SUCCESS);
     }
 }

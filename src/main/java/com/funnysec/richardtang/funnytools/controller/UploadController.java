@@ -4,7 +4,7 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import com.funnysec.richardtang.funnytools.constant.Character;
 import com.funnysec.richardtang.funnytools.constant.Suffix;
-import com.funnysec.richardtang.funnytools.constant.VoState;
+import com.funnysec.richardtang.funnytools.constant.State;
 import com.funnysec.richardtang.funnytools.vo.Vo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -43,19 +43,19 @@ public class UploadController extends BaseController {
 
         // 文件为空,文件名空！
         if (file.isEmpty() || StrUtil.isEmpty(fileName)) {
-            return vo(VoState.NOT_FOUND);
+            return vo(State.VO_NOT_FOUND);
         }
 
         String suffix = fileName.substring(fileName.lastIndexOf(Character.POINTER) + 1);
 
         if (!Suffix.TXT.equals(suffix)) {
-            return vo(VoState.UNQUALIFIED);
+            return vo(State.VO_UNQUALIFIED);
         }
 
         try {
             fileName = UUID.randomUUID() + Character.POINTER + Suffix.TXT;
             file.transferTo(new File(fileSavePath + fileName));
-            return new Vo(VoState.SUCCESS, fileName);
+            return new Vo(State.VO_SUCCESS, fileName);
         } catch (IOException e) {
             return f();
         }

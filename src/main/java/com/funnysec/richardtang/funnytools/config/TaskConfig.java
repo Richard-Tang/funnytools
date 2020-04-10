@@ -3,10 +3,11 @@ package com.funnysec.richardtang.funnytools.config;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.funnysec.richardtang.funnytools.constant.TaskState;
+import com.funnysec.richardtang.funnytools.constant.State;
 import com.funnysec.richardtang.funnytools.entity.Config;
 import com.funnysec.richardtang.funnytools.service.IConfigService;
 import com.funnysec.richardtang.funnytools.service.ITaskService;
+import com.funnysec.richardtang.funnytools.task.ini.DomainBaiduSearchIni;
 import com.funnysec.richardtang.funnytools.task.ini.DomainCertSearchIni;
 import com.funnysec.richardtang.funnytools.task.ini.DomainDicFuzzIni;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,13 @@ public class TaskConfig implements CommandLineRunner {
         return new DomainCertSearchIni(crtShApi, ctSearchApi);
     }
 
+    @Bean
+    public DomainBaiduSearchIni domainBaiduSearchIni(@Value("${project.baidu-search}") String baiduSearchApi) {
+        return new DomainBaiduSearchIni(baiduSearchApi);
+    }
+
     @Override
     public void run(String... args) {
-        taskService.update().eq("state", TaskState.ING).set("state", TaskState.WAIT);
+        taskService.update().eq("state", State.TASK_ING).set("state", State.TASK_WAIT);
     }
 }

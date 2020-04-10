@@ -5,8 +5,8 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.funnysec.richardtang.funnytools.constant.Character;
-import com.funnysec.richardtang.funnytools.constant.TaskState;
-import com.funnysec.richardtang.funnytools.constant.TaskType;
+import com.funnysec.richardtang.funnytools.constant.State;
+import com.funnysec.richardtang.funnytools.constant.Type;
 import com.funnysec.richardtang.funnytools.entity.Domain;
 import com.funnysec.richardtang.funnytools.task.base.AbstractDomainTask;
 import com.funnysec.richardtang.funnytools.task.ini.DomainCertSearchIni;
@@ -37,7 +37,7 @@ public class DomainCertSearchBaseTask extends AbstractDomainTask {
     private DomainCertSearchIni domainCertSearchIni;
 
     protected DomainCertSearchBaseTask() {
-        super(TaskType.DOMAIN_CERT_SEARCH);
+        super(Type.TASK_DOMAIN_CERT_SEARCH);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DomainCertSearchBaseTask extends AbstractDomainTask {
 
     @Override
     public void start() {
-        updateTaskState(TaskState.ING);
+        updateTaskState(State.TASK_ING);
         List<String> split = StrUtil.splitTrim(task.getTarget(), Character.POINTER);
         this.regex = String.format("[a-z0-9A-Z.-]*\\.%s\\.%s", CollUtil.get(split, split.size() - 2), CollUtil.getLast(split));
         crtShApi();

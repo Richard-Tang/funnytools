@@ -1,6 +1,6 @@
 package com.funnysec.richardtang.funnytools.controller;
 
-import com.funnysec.richardtang.funnytools.constant.VoState;
+import com.funnysec.richardtang.funnytools.constant.State;
 import com.funnysec.richardtang.funnytools.vo.Vo;
 
 /**
@@ -12,11 +12,11 @@ import com.funnysec.richardtang.funnytools.vo.Vo;
 public class BaseController {
 
     Vo s() {
-        return vo(VoState.SUCCESS);
+        return vo(State.VO_SUCCESS);
     }
 
     Vo f() {
-        return vo(VoState.FAIL);
+        return vo(State.VO_FAIL);
     }
 
     Vo vo(Long code) {

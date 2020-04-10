@@ -4,6 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -18,6 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableTransactionManagement
 @EnableConfigurationProperties
 @MapperScan("com.funnysec.richardtang.funnytools.mapper*")
+@Import(cn.hutool.extra.spring.SpringUtil.class)
 @SpringBootApplication
 public class FunnyToolsApplication {
 

@@ -2,7 +2,7 @@ package com.funnysec.richardtang.funnytools.task.base;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.funnysec.richardtang.funnytools.constant.TaskState;
+import com.funnysec.richardtang.funnytools.constant.State;
 import com.funnysec.richardtang.funnytools.entity.Task;
 import com.funnysec.richardtang.funnytools.service.IDomainService;
 import com.funnysec.richardtang.funnytools.service.ITaskService;
@@ -57,7 +57,7 @@ public abstract class AbstractDomainTask implements IBaseTask {
             // 符合进行任务的条件
             if (isOk(getTask().getTarget())) {
                 try {
-                    updateTaskState(TaskState.ING);
+                    updateTaskState(State.TASK_ING);
                     // 开始任务
                     start();
                 } catch (Exception e) {
@@ -74,7 +74,7 @@ public abstract class AbstractDomainTask implements IBaseTask {
      */
     @Override
     public void closeTask() {
-        updateTaskState(TaskState.COMPLETE);
+        updateTaskState(State.TASK_COMPLETE);
         task = null;
         lock = true;
     }
@@ -99,7 +99,7 @@ public abstract class AbstractDomainTask implements IBaseTask {
     public Task getTask() {
         if (ObjectUtil.isNull(task)) {
             task = taskService.getOne(new QueryWrapper<Task>()
-                    .eq("state", TaskState.WAIT)
+                    .eq("state", State.TASK_WAIT)
                     .eq("type", taskType)
                     .orderByAsc("create_time"), false);
         }

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.funnysec.richardtang.funnytools.constant.TaskState;
+import com.funnysec.richardtang.funnytools.constant.State;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -47,6 +47,6 @@ public class Task {
     public Task(String target, Integer type) {
         this.target = target;
         this.type = type;
-        this.state = TaskState.WAIT;
+        this.state = State.TASK_WAIT;
     }
 }

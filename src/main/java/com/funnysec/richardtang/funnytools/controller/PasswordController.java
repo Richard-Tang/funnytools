@@ -1,10 +1,9 @@
 package com.funnysec.richardtang.funnytools.controller;
 
 import cn.hutool.crypto.SecureUtil;
-import com.funnysec.richardtang.funnytools.constant.VoState;
+import com.funnysec.richardtang.funnytools.constant.State;
 import com.funnysec.richardtang.funnytools.entity.User;
 import com.funnysec.richardtang.funnytools.service.IUserService;
-import com.funnysec.richardtang.funnytools.service.impl.UserServiceImpl;
 import com.funnysec.richardtang.funnytools.vo.Vo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -58,7 +57,7 @@ public class PasswordController extends BaseController {
             user.setPassword(SecureUtil.md5(newPassword));
             return vo(userService.updateById(user));
         } else {
-            return vo(VoState.UNQUALIFIED);
+            return vo(State.VO_UNQUALIFIED);
         }
     }
 }

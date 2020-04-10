@@ -1,6 +1,6 @@
 package com.funnysec.richardtang.funnytools.handler;
 
-import com.funnysec.richardtang.funnytools.constant.VoState;
+import com.funnysec.richardtang.funnytools.constant.State;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,7 +33,7 @@ public class ValidationExceptionHandler {
         boolean isJson = method.isAnnotationPresent(ResponseBody.class);
         if (isJson) {
             ModelAndView mv = new ModelAndView(new MappingJackson2JsonView());
-            mv.addObject("code", VoState.PARAM_FAIL);
+            mv.addObject("code", State.VO_PARAM_FAIL);
             mv.addObject("msg", e.getConstraintViolations().iterator().next().getMessage());
             return mv;
         } else {

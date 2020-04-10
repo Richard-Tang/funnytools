@@ -5,8 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.funnysec.richardtang.funnytools.annotation.IpOrDomain;
-import com.funnysec.richardtang.funnytools.constant.TaskState;
-import com.funnysec.richardtang.funnytools.constant.VoState;
+import com.funnysec.richardtang.funnytools.constant.State;
 import com.funnysec.richardtang.funnytools.entity.Task;
 import com.funnysec.richardtang.funnytools.service.ITaskService;
 import com.funnysec.richardtang.funnytools.vo.Vo;
@@ -14,7 +13,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -22,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.*;
-import java.lang.annotation.Target;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 任务管理
@@ -87,8 +82,8 @@ public class TaskController extends BaseController {
     @ApiImplicitParam(name = "id", value = "任务ID", paramType = "query", dataType = "Integer", required = true)
     public Vo del(@NotNull(message = "ID不能为空") @Min(value = 0, message = "id范围不正确") Integer id) {
         Task task = taskService.getById(id);
-        if (task.getState().equals(TaskState.ING)) {
-            return vo(VoState.UNQUALIFIED);
+        if (task.getState().equals(State.TASK_ING)) {
+            return vo(State.VO_UNQUALIFIED);
         }
         return vo(taskService.removeById(id));
     }

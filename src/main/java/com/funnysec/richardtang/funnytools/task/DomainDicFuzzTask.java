@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
-import com.funnysec.richardtang.funnytools.constant.TaskState;
-import com.funnysec.richardtang.funnytools.constant.TaskType;
+import com.funnysec.richardtang.funnytools.constant.State;
+import com.funnysec.richardtang.funnytools.constant.Type;
 import com.funnysec.richardtang.funnytools.entity.Domain;
 import com.funnysec.richardtang.funnytools.task.base.AbstractDomainTask;
 import com.funnysec.richardtang.funnytools.task.ini.DomainDicFuzzIni;
@@ -34,7 +34,7 @@ public class DomainDicFuzzTask extends AbstractDomainTask {
     private String fileBasePath;
 
     protected DomainDicFuzzTask() {
-        super(TaskType.DOMAIN_DIC_FUZZ);
+        super(Type.TASK_DOMAIN_DIC_FUZZ);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DomainDicFuzzTask extends AbstractDomainTask {
      */
     @Override
     public void start() throws InterruptedException {
-        updateTaskState(TaskState.ING);
+        updateTaskState(State.TASK_ING);
         // 创建字典
         List<String> dicLines = createDicLines();
         if (CollUtil.isNotEmpty(dicLines)) {
