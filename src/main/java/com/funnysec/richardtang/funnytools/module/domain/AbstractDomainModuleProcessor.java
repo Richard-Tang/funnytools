@@ -1,4 +1,4 @@
-package com.funnysec.richardtang.funnytools.task.processer;
+package com.funnysec.richardtang.funnytools.module.domain;
 
 import com.funnysec.richardtang.funnytools.constant.HttpHeaders;
 import com.funnysec.richardtang.funnytools.utils.NetUtils;
@@ -10,51 +10,44 @@ import us.codecraft.webmagic.processor.PageProcessor;
 import java.util.HashSet;
 
 /**
- * 定义爬虫统一的共性行为
+ * 域名功能模块具体实现基于WebMagic实现的功能基类
  *
  * @author RichardTang
- * @date 2020/4/9
+ * @date 2020/4/10
  */
-public abstract class BaseProcessor implements PageProcessor {
+public abstract class AbstractDomainModuleProcessor extends AbstractDomainModuleBase implements PageProcessor {
 
-    /**
-     * 这个key是用来和Pipeline中进行绑定的
-     */
-    protected String key;
+    protected String api;
 
-    /**
-     * 目标域名
-     */
-    protected String target;
+    protected String regex;
 
-    /**
-     * 域名对象
-     */
     protected Site site = Site.me();
 
-    /**
-     * 存储结果的集合
-     */
     protected HashSet<String> result;
 
-    protected BaseProcessor(String target, String key) {
-        this.key = key;
-        this.target = target;
+    protected AbstractDomainModuleProcessor(Integer type) {
+        this(type, "");
+    }
+
+    protected AbstractDomainModuleProcessor(Integer type, String api) {
+        super(type);
+        this.api = api;
         this.result = new HashSet<String>();
     }
 
+    /**
+     * 页面具体的处理函数
+     *
+     * @param page 页面
+     */
     @Override
-    public void process(Page page) {
-        page.putField(key, result);
-        processWrapper(page);
-    }
-
-    public abstract void processWrapper(Page page);
+    public abstract void process(Page page);
 
     @Override
     public Site getSite() {
         String ip = NetUtils.getRandomIp();
         return site
+                .setTimeOut(3000)
                 .setUserAgent(UserAgentUtil.random())
                 .addHeader(HttpHeaders.ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
                 .addHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate, b")

@@ -1,4 +1,4 @@
-package com.funnysec.richardtang.funnytools.task.pipeline;
+package com.funnysec.richardtang.funnytools.module.domain.pipeline;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
@@ -26,7 +26,7 @@ public class DomainPipeline implements Pipeline {
     /**
      * PiplineKey和Processor对应
      */
-    public String key;
+    public static final String KEY = "com.funnysec.richardtang.funnytools.module.domain.DomainPipeline";
 
     /**
      * Spring是线程安全的所以Autowired无法注入
@@ -34,11 +34,9 @@ public class DomainPipeline implements Pipeline {
      */
     private IDomainService service;
 
-    public DomainPipeline(String key) {
-        this.key = key;
+    public DomainPipeline() {
         this.service = SpringUtil.getBean(IDomainService.class);
     }
-
 
     /**
      * 数据具体如何存储到数据库中的Domain表中
@@ -49,12 +47,11 @@ public class DomainPipeline implements Pipeline {
      */
     @Override
     public void process(ResultItems resultItems, Task task) {
-        HashSet<String> result = resultItems.get(key);
+        HashSet<String> result = resultItems.get(KEY);
         // 判断result是否为空并且对result进行去重后再次判断是否为空
         if (CollectionUtil.isEmpty(result) || CollectionUtil.isEmpty(clearRepeat(result))) {
             return;
         }
-
         List<Domain> domains = selectIp(result);
         if (CollectionUtil.isNotEmpty(domains)) {
             service.saveBatch(domains);

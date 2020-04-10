@@ -1,44 +1,62 @@
-package com.funnysec.richardtang.funnytools.task.processer;
+package com.funnysec.richardtang.funnytools.module.domain.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.funnysec.richardtang.funnytools.constant.*;
 import com.funnysec.richardtang.funnytools.constant.Character;
-import com.funnysec.richardtang.funnytools.constant.Protocol;
-import com.funnysec.richardtang.funnytools.task.ini.DomainBaiduSearchIni;
+import com.funnysec.richardtang.funnytools.module.domain.AbstractDomainModuleProcessor;
+import com.funnysec.richardtang.funnytools.module.domain.pipeline.DomainPipeline;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
+import us.codecraft.webmagic.Spider;
 
 /**
- * WebMagic爬虫实现从Baidu搜索页面中查找域名
+ * 百度搜索域名模块
  *
  * @author RichardTang
- * @date 2020/3/21
+ * @date 2020/4/10
  */
-public class BaiduSearchProcesser extends BaseProcessor {
+@Component
+public class BaiduSearch extends AbstractDomainModuleProcessor {
 
-    /**
-     * 百度搜索引擎每页显示条数
-     */
     private Integer pageSize;
 
-    /**
-     * 页号
-     */
     private Integer pageIndex;
 
-    private String api;
-
-    public BaiduSearchProcesser(String target, String key, String api) {
-        super(target, key);
+    private BaiduSearch(@Value("${project.baidu}") String api) {
+        super(Type.TASK_DOMAIN_BAIDU_SEARCH, api);
         this.pageSize = 50;
         this.pageIndex = 1;
-        this.api = api;
     }
 
+    /**
+     * 初始化操作
+     */
     @Override
-    public void processWrapper(Page page) {
+    public void start(String target) {
+        try {
+            Thread.sleep(10000);
+        } catch (Exception e) {
+            
+        }
+        Spider.create(this)
+                .addUrl(String.format(api, "0", target))
+                .addPipeline(new DomainPipeline())
+                .run();
+    }
+
+    /**
+     * /**
+     * WebMagic提供的处理函数
+     *
+     * @param page 页面对象
+     */
+    @Override
+    public void process(Page page) {
+        page.putField(DomainPipeline.KEY, result);
         Document parse = Jsoup.parse(page.getHtml().get());
         parse.select("a[class='c-showurl']").forEach(e -> {
             // 去除开头携带的协议
@@ -62,8 +80,7 @@ public class BaiduSearchProcesser extends BaseProcessor {
         String pageHtml = document.getElementById("page").html();
         int index = pageHtml.indexOf(String.format("pn=%s", pn));
         if (index != -1) {
-            page.addTargetRequest(String.format(api, pn, this.target));
+            page.addTargetRequest(String.format(api, pn, currentTask.getTarget()));
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package com.funnysec.richardtang.funnytools.task.ini;
+package com.funnysec.richardtang.funnytools.module.domain.ini;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class DomainDicFuzzIni {
-
-    private Integer threadSize;
+public class DomainModuleDicFuzzIni {
 
     private String dicName;
 
-    public DomainDicFuzzIni(Integer threadSize) {
+    private Integer threadSize;
+
+    public DomainModuleDicFuzzIni(Integer threadSize) {
         this.threadSize = threadSize;
     }
 }

@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.funnysec.richardtang.funnytools.constant.State;
 import com.funnysec.richardtang.funnytools.constant.Type;
 import com.funnysec.richardtang.funnytools.entity.Config;
+import com.funnysec.richardtang.funnytools.module.domain.ini.DomainModuleDicFuzzIni;
 import com.funnysec.richardtang.funnytools.service.IConfigService;
-import com.funnysec.richardtang.funnytools.task.ini.DomainDicFuzzIni;
 import com.funnysec.richardtang.funnytools.vo.Vo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -37,7 +37,7 @@ public class ConfigController extends BaseController {
     private IConfigService configService;
 
     @Autowired
-    private DomainDicFuzzIni domainDicFuzzIni;
+    private DomainModuleDicFuzzIni domainModuleDicFuzzIni;
 
     @ResponseBody
     @PostMapping("update")
@@ -55,9 +55,9 @@ public class ConfigController extends BaseController {
             因为@Bean是单例的重新赋值就相当于重新指向了一个对象
             重新指向的话将会操作失败
             */
-            DomainDicFuzzIni newIni = JSONUtil.toBean(ini, DomainDicFuzzIni.class);
-            domainDicFuzzIni.setDicName(newIni.getDicName());
-            domainDicFuzzIni.setThreadSize(newIni.getThreadSize());
+            DomainModuleDicFuzzIni newIni = JSONUtil.toBean(ini, DomainModuleDicFuzzIni.class);
+            domainModuleDicFuzzIni.setDicName(newIni.getDicName());
+            domainModuleDicFuzzIni.setThreadSize(newIni.getThreadSize());
         }
         return vo(isSuccess);
     }
@@ -70,7 +70,7 @@ public class ConfigController extends BaseController {
     })
     public Vo get(@NotNull(message = "类型不能为空") @Min(value = -1, message = "类型不正确") Integer type) {
         if (type == Type.TASK_DOMAIN_DIC_FUZZ) {
-            return vo(State.VO_SUCCESS, JSONUtil.toJsonStr(domainDicFuzzIni));
+            return vo(State.VO_SUCCESS, JSONUtil.toJsonStr(domainModuleDicFuzzIni));
         }
         return vo(State.VO_SUCCESS);
     }

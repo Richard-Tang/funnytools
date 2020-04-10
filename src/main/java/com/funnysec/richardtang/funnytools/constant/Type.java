@@ -24,7 +24,7 @@ public class Type {
     public static final int TASK_DOMAIN_PAGE_SEARCH = 1;
 
     /**
-     * 通过证书站进行域名搜索
+     * CertSh证书站搜索
      */
     public static final int TASK_DOMAIN_CERT_SEARCH = 2;
 
@@ -33,4 +33,8 @@ public class Type {
      */
     public static final int TASK_DOMAIN_BAIDU_SEARCH = 3;
 
+    /**
+     * Ct证书站搜索
+     */
+    public static final int TASK_DOMAIN_CT_SEARCH = 4;
 }

@@ -36,6 +36,8 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+  main:
+    allow-bean-definition-overriding: true
 server:
   port: 8083
   compression:
@@ -48,7 +50,7 @@ mybatis-plus:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 project:
   file-base-path: D:\\file\\
-  crt-sh-api: https://crt.sh/?q=
-  ct-search-api: https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&includeExpired=true&exactMatch=false&limit=5000&domain=
+  crt-sh: https://crt.sh/?q=
+  ctsearch: https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&includeExpired=true&exactMatch=false&limit=5000&domain=
   # 这个有:号需要用双引号包括
-  baidu-search: "https://www.baidu.com/s?&rn=50&pn=%s&wd=site:%s"
+  baidu: "https://www.baidu.com/s?&rn=50&pn=%s&wd=site:%s"
