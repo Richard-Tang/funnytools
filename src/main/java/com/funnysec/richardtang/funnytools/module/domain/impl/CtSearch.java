@@ -9,7 +9,6 @@ import com.funnysec.richardtang.funnytools.module.domain.AbstractDomainModulePro
 import com.funnysec.richardtang.funnytools.module.domain.pipeline.DomainPipeline;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Spider;
@@ -27,8 +26,8 @@ import java.util.List;
 public class CtSearch extends AbstractDomainModuleProcessor {
 
     @Autowired
-    private CtSearch(@Value("${project.ctsearch}") String api) {
-        super(Type.TASK_DOMAIN_CT_SEARCH, api);
+    private CtSearch(@Value("${project.ct-search}") String api) {
+        super(Module.CT_SEARCH, api);
     }
 
     /**
@@ -36,18 +35,8 @@ public class CtSearch extends AbstractDomainModuleProcessor {
      */
     @Override
     public void start(String target) {
-        try {
-            Thread.sleep(10000);
-        } catch (Exception e) {
-
-        }
-        List<String> split = StrUtil.splitTrim(target, Character.POINTER);
-        this.regex = String.format("[a-z0-9A-Z.-]*\\.%s\\.%s", CollUtil.get(split, split.size() - 2), CollUtil.getLast(split));
-        String url = (api + target)
-                .replace("cn\\u003d", Character.BLANK)
-                .replace("*.", Character.BLANK);
         Spider.create(this)
-                .addUrl(url)
+                .addUrl(String.format(api,target))
                 .addPipeline(new DomainPipeline())
                 .run();
     }
@@ -60,6 +49,6 @@ public class CtSearch extends AbstractDomainModuleProcessor {
     @Override
     public void process(Page page) {
         page.putField(DomainPipeline.KEY, result);
-        ReUtil.findAll(regex, page.getHtml().get(), 0, result);
+        findDomainToResult(page.getHtml());
     }
 }

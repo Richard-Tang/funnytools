@@ -10,7 +10,6 @@ import com.funnysec.richardtang.funnytools.utils.NetUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Spider;
@@ -29,7 +28,7 @@ public class PageSearch extends AbstractDomainModuleProcessor {
 
     @Autowired
     private PageSearch() {
-        super(Type.TASK_DOMAIN_PAGE_SEARCH);
+        super(Module.PAGE_SEARCH);
     }
 
     /**
@@ -37,14 +36,6 @@ public class PageSearch extends AbstractDomainModuleProcessor {
      */
     @Override
     public void start(String target) {
-        try {
-            Thread.sleep(10000);
-        } catch (Exception e) {
-
-        }
-        List<String> split = StrUtil.splitTrim(target, Character.POINTER);
-        this.regex = String.format("[a-z0-9A-Z.-]*\\.%s\\.%s",
-                CollUtil.get(split, split.size() - 2), CollUtil.getLast(split));
         String url = NetUtils.getHttpProtocol(target) + target;
         Spider.create(this)
                 .addUrl(url)
@@ -60,8 +51,8 @@ public class PageSearch extends AbstractDomainModuleProcessor {
     @Override
     public void process(Page page) {
         page.putField(DomainPipeline.KEY, result);
-        Document html = Jsoup.parse(page.getHtml().get());
-        result.addAll(page.getHtml().regex(regex).all());
+        findDomainToResult(page.getHtml());
+        Document html = page.getHtml().getDocument();
         List<String> jsLink = html.getElementsByTag("script").eachAttr("src");
         jsLink.forEach(link -> {
             // 非 ['https://','http://','//'] 开头的连接一定都为当前域名下的资源文件

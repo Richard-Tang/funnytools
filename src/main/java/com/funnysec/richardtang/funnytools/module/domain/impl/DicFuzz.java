@@ -6,7 +6,6 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.StrUtil;
 import com.funnysec.richardtang.funnytools.constant.*;
 import com.funnysec.richardtang.funnytools.entity.Domain;
-import com.funnysec.richardtang.funnytools.entity.Task;
 import com.funnysec.richardtang.funnytools.module.domain.AbstractDomainModuleBase;
 import com.funnysec.richardtang.funnytools.module.domain.ini.DomainModuleDicFuzzIni;
 import com.funnysec.richardtang.funnytools.service.IDomainService;
@@ -38,7 +37,7 @@ public class DicFuzz extends AbstractDomainModuleBase {
     private DomainModuleDicFuzzIni ini;
 
     private DicFuzz() {
-        super(Type.TASK_DOMAIN_DIC_FUZZ);
+        super(Module.DIC_FUZZ);
     }
 
     /**

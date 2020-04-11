@@ -50,7 +50,8 @@ mybatis-plus:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 project:
   file-base-path: D:\\file\\
-  crt-sh: https://crt.sh/?q=
-  ctsearch: https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&includeExpired=true&exactMatch=false&limit=5000&domain=
-  # 这个有:号需要用双引号包括
-  baidu: "https://www.baidu.com/s?&rn=50&pn=%s&wd=site:%s"
+  crtsh-search: "https://crt.sh/?q=%s"
+  ct-search: "https://ctsearch.entrust.com/api/v1/certificates?fields=subjectDN&includeExpired=true&exactMatch=false&limit=5000&domain=%s"
+  baidu-search: "https://www.baidu.com/s?&rn=50&pn=%s&wd=site:%s"
+  bing-search: "https://www.bing.com/search?q=site:%s&count=50&first=%s"
+  sogou-search: "https://www.sogou.com/web?query=site:%s&page=%s&num=50"

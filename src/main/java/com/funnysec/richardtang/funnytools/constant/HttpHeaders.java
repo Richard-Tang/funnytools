@@ -28,6 +28,6 @@ public class HttpHeaders extends org.springframework.http.HttpHeaders {
 
     public static final String CONNECTION_KEEP_ALIVE = "keep-alive";
 
-    public static final String REFERER_GOOGLE = "https://www.google.com/";
+    public static final String REFERER_GOOGLE = "https://google.com/";
 
 }

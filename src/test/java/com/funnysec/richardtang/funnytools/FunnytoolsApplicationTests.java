@@ -7,7 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 class FunnytoolsApplicationTests {
 
     @Test
-    void contextLoads() throws InterruptedException {
-        Thread.sleep(10000000);
+    void contextLoads() {
+
+
+
     }
 }

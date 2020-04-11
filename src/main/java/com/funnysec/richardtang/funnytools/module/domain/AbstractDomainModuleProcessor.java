@@ -1,13 +1,17 @@
 package com.funnysec.richardtang.funnytools.module.domain;
 
+import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
 import com.funnysec.richardtang.funnytools.constant.HttpHeaders;
 import com.funnysec.richardtang.funnytools.utils.NetUtils;
 import com.funnysec.richardtang.funnytools.utils.UserAgentUtil;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
+import us.codecraft.webmagic.selector.Html;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * 域名功能模块具体实现基于WebMagic实现的功能基类
@@ -42,6 +46,22 @@ public abstract class AbstractDomainModuleProcessor extends AbstractDomainModule
      */
     @Override
     public abstract void process(Page page);
+
+    /**
+     * 根据currentTask中的target来查找Html中符合规则的域名
+     * @param html 页面html标签
+     */
+    protected List<String> findDomainByTarget(Html html) {
+        if (StrUtil.isEmpty(this.regex)) {
+            String[] split1 = currentTask.getTarget().split("\\.");
+            this.regex = String.format("[a-z0-9A-Z.-]*\\.%s\\.%s", split1[0],split1[1]);
+        }
+        return html.regex(regex).all();
+    }
+
+    protected void findDomainToResult(Html html) {
+        result.addAll(findDomainByTarget(html));
+    }
 
     @Override
     public Site getSite() {

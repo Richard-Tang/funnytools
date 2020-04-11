@@ -8,7 +8,6 @@ import com.funnysec.richardtang.funnytools.constant.Character;
 import com.funnysec.richardtang.funnytools.module.domain.AbstractDomainModuleProcessor;
 import com.funnysec.richardtang.funnytools.module.domain.pipeline.DomainPipeline;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Spider;
@@ -25,8 +24,8 @@ import java.util.List;
 @Component
 public class CrtShSearch extends AbstractDomainModuleProcessor {
 
-    private CrtShSearch(@Value("${project.crt-sh}") String api) {
-        super(Type.TASK_DOMAIN_CERT_SEARCH, api);
+    private CrtShSearch(@Value("${project.crtsh-search}") String api) {
+        super(Module.CRT_SH_SEARCH, api);
     }
 
     /**
@@ -34,16 +33,8 @@ public class CrtShSearch extends AbstractDomainModuleProcessor {
      */
     @Override
     public void start(String target) {
-        try {
-            Thread.sleep(10000);
-        } catch (Exception e) {
-
-        }
-        List<String> split = StrUtil.splitTrim(target, Character.POINTER);
-        this.regex = String.format("[a-z0-9A-Z.-]*\\.%s\\.%s",
-                CollUtil.get(split, split.size() - 2), CollUtil.getLast(split));
         Spider.create(this)
-                .addUrl((api + target).replace("*.", Character.BLANK))
+                .addUrl((String.format(api,target)))
                 .addPipeline(new DomainPipeline())
                 .run();
     }
@@ -56,6 +47,6 @@ public class CrtShSearch extends AbstractDomainModuleProcessor {
     @Override
     public void process(Page page) {
         page.putField(DomainPipeline.KEY, result);
-        ReUtil.findAll(regex, page.getHtml().get(), 0, result);
+        findDomainToResult(page.getHtml());
     }
 }

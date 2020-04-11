@@ -34,7 +34,6 @@ public abstract class AbstractDomainModuleBase {
      */
     @Scheduled(fixedDelay = 10000)
     protected void start() {
-        System.out.println("=====================" + getClass().getSimpleName() + ":" + lock + "===============================");
         // 判断锁是否释放,未释放将不从数据库获取新任务
         if (!lock) {
             return;
